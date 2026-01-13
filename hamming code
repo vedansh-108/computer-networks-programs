@@ -1,0 +1,47 @@
+// Program 1: Hamming Code – Error Detection and Correction
+
+#include <stdio.h>
+
+int main()
+{
+    int data[7], recv[7];
+    int c1, c2, c3, c;
+
+    printf("Enter 4 data bits:\n");
+    scanf("%d %d %d %d", &data[0], &data[1], &data[2], &data[4]);
+
+    // Parity bits (even parity)
+    data[6] = data[0] ^ data[2] ^ data[4];
+    data[5] = data[0] ^ data[1] ^ data[4];
+    data[3] = data[0] ^ data[1] ^ data[2];
+
+    printf("\nEncoded data: ");
+    for (int i = 0; i < 7; i++)
+        printf("%d", data[i]);
+
+    printf("\n\nEnter received 7-bit data:\n");
+    for (int i = 0; i < 7; i++)
+        scanf("%d", &recv[i]);
+
+    c1 = recv[6] ^ recv[4] ^ recv[2] ^ recv[0];
+    c2 = recv[5] ^ recv[4] ^ recv[1] ^ recv[0];
+    c3 = recv[3] ^ recv[2] ^ recv[1] ^ recv[0];
+
+    c = c3 * 4 + c2 * 2 + c1;
+
+    if (c == 0)
+    {
+        printf("\nNo error detected.");
+    }
+    else
+    {
+        printf("\nError detected at position %d", c);
+        recv[7 - c] ^= 1;
+
+        printf("\nCorrected data: ");
+        for (int i = 0; i < 7; i++)
+            printf("%d", recv[i]);
+    }
+
+    return 0;
+}
