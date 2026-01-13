@@ -1,0 +1,51 @@
+// Program 3: CSMA/CD Protocol
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+class Station
+{
+    string name;
+
+public:
+    Station(string n) : name(n) {}
+
+    void transmit()
+    {
+        if (rand() % 2)
+        {
+            cout << name << ": Channel busy, waiting...\n";
+            return;
+        }
+
+        cout << name << ": Transmitting...\n";
+
+        if (rand() % 2)
+        {
+            cout << name << ": Collision detected! Retransmitting later.\n";
+        }
+        else
+        {
+            cout << name << ": Transmission successful.\n";
+        }
+    }
+};
+
+int main()
+{
+    srand(time(0));
+
+    Station A("Station A");
+    Station B("Station B");
+
+    for (int i = 1; i <= 10; i++)
+    {
+        cout << "\nScenario " << i << endl;
+        A.transmit();
+        B.transmit();
+    }
+
+    return 0;
+}
