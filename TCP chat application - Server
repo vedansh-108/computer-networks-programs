@@ -1,0 +1,35 @@
+// Program 6: TCP Client–Server Chat Application
+// Server Code
+
+#include <stdio.h>
+#include <netinet/in.h>
+#include <unistd.h>
+
+#define PORT 5035
+
+int main()
+{
+    int sockfd, newsockfd;
+    char buffer[1024];
+    struct sockaddr_in server;
+
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = htons(PORT);
+
+    bind(sockfd, (struct sockaddr *)&server, sizeof(server));
+    listen(sockfd, 5);
+
+    newsockfd = accept(sockfd, NULL, NULL);
+
+    read(newsockfd, buffer, sizeof(buffer));
+    printf("Client: %s\n", buffer);
+
+    write(newsockfd, buffer, sizeof(buffer));
+
+    close(newsockfd);
+    close(sockfd);
+    return 0;
+}
