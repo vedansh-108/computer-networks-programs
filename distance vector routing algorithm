@@ -1,0 +1,59 @@
+// Program 4: Distance Vector Routing Algorithm
+
+#include <iostream>
+using namespace std;
+
+struct Node
+{
+    int dist[10];
+    int from[10];
+};
+
+int main()
+{
+    int n;
+    int cost[10][10];
+    Node dv[10];
+
+    cout << "Enter number of nodes: ";
+    cin >> n;
+
+    cout << "Enter cost matrix:\n";
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cin >> cost[i][j];
+            dv[i].dist[j] = cost[i][j];
+            dv[i].from[j] = j;
+        }
+    }
+
+    for (int k = 0; k < n; k++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (dv[i].dist[j] > dv[i].dist[k] + dv[k].dist[j])
+                {
+                    dv[i].dist[j] = dv[i].dist[k] + dv[k].dist[j];
+                    dv[i].from[j] = k;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << "\nRouter " << i + 1 << endl;
+        for (int j = 0; j < n; j++)
+        {
+            cout << "Node " << j + 1
+                 << " via " << dv[i].from[j] + 1
+                 << " Distance " << dv[i].dist[j] << endl;
+        }
+    }
+
+    return 0;
+}
