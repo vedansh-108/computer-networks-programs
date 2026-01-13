@@ -1,0 +1,52 @@
+// Program 5: Link State Routing (Least Cost Tree)
+
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+#define INF INT_MAX
+
+int main()
+{
+    int n = 4;
+    vector<vector<int>> graph = {
+        {0, 4, 2, INF},
+        {4, 0, 5, 10},
+        {2, 5, 0, 1},
+        {INF, 10, 1, 0}};
+
+    vector<int> dist(n, INF), parent(n, -1);
+    vector<bool> visited(n, false);
+
+    dist[0] = 0;
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        int u = -1;
+        for (int j = 0; j < n; j++)
+            if (!visited[j] && (u == -1 || dist[j] < dist[u]))
+                u = j;
+
+        visited[u] = true;
+
+        for (int v = 0; v < n; v++)
+        {
+            if (!visited[v] && graph[u][v] != INF &&
+                dist[u] + graph[u][v] < dist[v])
+            {
+                dist[v] = dist[u] + graph[u][v];
+                parent[v] = u;
+            }
+        }
+    }
+
+    cout << "Least Cost Tree:\n";
+    for (int i = 1; i < n; i++)
+    {
+        cout << parent[i] << " -> " << i
+             << " Cost: " << graph[i][parent[i]] << endl;
+    }
+
+    return 0;
+}
